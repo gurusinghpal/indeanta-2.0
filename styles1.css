@@ -1,0 +1,205 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    /* padding: 20px; */
+}
+
+.top-left-icon {
+    position: absolute; /* Positioning it relative to the nearest positioned ancestor */
+    top: 15px; /* Distance from the top */
+    left: 20px; /* Distance from the left */
+    width: 30px; /* Adjust size as needed */
+    height: 30px; /* Adjust size as needed */
+    z-index: 10; /* Ensure it appears above other content */
+}
+
+.main-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0);
+    overflow: hidden;
+}
+
+.wallet {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    align-items: center;
+    background-color: white;
+    padding: 65px 12px;
+}
+
+.balance-box {
+    background-color: #ddfff0; /* Sea green color */
+    margin-left: 7px;
+    margin-right: 7px;
+    height: 220px;
+    border-radius: 12px; /* Slight curves */
+    padding: 20px; /* Space inside the box */
+    margin-bottom: 10px; /* Space below the box */
+    color: white; /* Text color for better contrast */
+}
+
+
+.balance-logo {
+    position: absolute;
+    width: 40px; /* Adjust the size as needed */
+    height: 40px;
+    margin-right: 8px; /* Slight margin for spacing between logo and text */
+    margin-top: -12px;    
+}
+
+.balance-section h2 {
+    font-size: 20px;
+    font: 1em sans-serif;
+    margin-left: 40px;
+    color: #666;
+    margin-top: 8px;
+}
+
+.balance-section h1 {
+    font-size: 45px;
+    font-family: Arial;
+    letter-spacing: 2px;
+    font-weight: 550;
+    margin-left: 25px;
+    margin-top: 12px;
+    color: #000000;
+}
+
+.add-money-btn {
+    background: linear-gradient(45deg, #8ac537, #24ae02);
+    color: white;
+    align-items: center;
+    padding: 15px 45px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-top: 25px;
+    /* position:absolute; */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    margin-left: 23%;
+    text-align: center;
+}
+
+.add-money-btn:hover {
+    background: linear-gradient(45deg, #45a049, #2e9747);
+}
+
+.transactions-section {
+    margin-top: 20px;
+}
+
+.transactions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.transactions-header h2 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.view-all {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: black;
+}
+
+.transaction {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.transaction:last-child {
+    border-bottom: none;
+}
+
+.icon-background {
+    background-color: rgb(241,253,255); /* Light grey color with some transparency */
+    border-radius: 50%; /* Makes the div circular */
+    width: 45px; /* Size of the circle */
+    height: 45px; /* Size of the circle */
+    display: flex; /* Centers the icon inside the circle */
+    align-items: center; /* Vertically centers */
+    justify-content: center; /* Horizontally centers */
+    margin-left: 15px; /* Space between the circle and transaction details */
+}
+
+.transaction-icon {
+    width: 35px;
+    height: 35px;
+    margin-top: -6px;
+    /* margin-left: 30px; */
+}
+
+.bus-icon {
+    width: 40px;
+    height: 40px;
+    margin-top: 1px;
+    margin-right: 1px;
+}
+.background-wallet {
+    background-color: rgb(243,226,188, 0.5); /* Light grey color with some transparency */
+    border-radius: 50%; /* Makes the div circular */
+    width: 45px; /* Size of the circle */
+    height: 45px; /* Size of the circle */
+    display: flex; /* Centers the icon inside the circle */
+    align-items: center; /* Vertically centers */
+    justify-content: center; /* Horizontally centers */
+    margin-right: 10px; /* Space between the circle and transaction details */
+}
+
+.transaction-details {
+    flex-grow: 1;
+}
+
+.transaction-details p {
+    margin-bottom: 5px;
+    font-weight: bold;
+    line-height: 30px;
+    font-size: 19px;
+    margin-left: 30px;
+    color: #000000;
+}
+
+.transaction-details p:last-child {
+    font-size: 17.8px;
+    font-weight: lighter;
+    letter-spacing: 2px;
+    color: #313131;
+}
+
+.transaction-amount {
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 15px;
+    color: #333;
+}
+
+.transaction-box {
+    background-color: white; /* Background color of the box */
+    border-radius: 12px; /* Slight curves */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    margin-bottom: 25px; /* Space between transaction boxes */
+    /* width: 370px; */
+}
+

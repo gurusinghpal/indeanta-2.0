@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Interface</title>
+    <link rel="stylesheet" href="styles1.css">
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="wallet">
+            <img src="menuicon.png" alt="Top Left Icon" class="top-left-icon">
+
+            <div class="balance-box">
+                <div class="balance-section">
+                    <img src="logo.png" alt="Logo" class="balance-logo">
+                    <h2>Available Balance</h2>
+                    <h1 id="availableBalance">₹ 590</h1> <!-- Initial Balance -->
+                    <button class="add-money-btn">Add Money</button>
+                </div>
+            </div>
+
+            <div class="transactions-section">
+                <div class="transactions-header">
+                    <h2>Transactions</h2>
+                    <span class="view-all">View All</span>
+                </div>
+
+                <div class="transaction-box" id="transactionsContainer">
+                    <!-- Transactions will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+
+            // Retrieve balance; default to 500 if not set
+            const storedBalance = localStorage.getItem('balance');
+            const currentBalance = storedBalance !== null && storedBalance !== '' ? storedBalance : '500';
+
+            // Display the current balance
+            document.getElementById('availableBalance').textContent = `₹ ${currentBalance}`;
+
+            // Function to display transactions
+            const displayTransactions = () => {
+                const transactionsContainer = document.getElementById('transactionsContainer');
+                transactionsContainer.innerHTML = ''; // Clear the container before displaying
+
+                // Get the transactions from localStorage
+                const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+                // Reverse the transactions array to show the newest first
+                transactions.reverse();
+
+                transactions.forEach(transaction => {
+                    const transactionHTML = `
+                <div class="transaction">
+                    <div class="icon-background">
+                        <img src="bus.png" alt="Bus icon" class="transaction-icon">
+                    </div>
+                    <div class="transaction-details">
+                        <p>${transaction.description}</p>
+                        <p>${transaction.date}, ${transaction.time}</p>
+                    </div>
+                    <div class="transaction-amount">- ₹${transaction.amount}</div>
+                </div>
+            `;
+                    transactionsContainer.innerHTML += transactionHTML; // Append each transaction
+                });
+            };
+
+            // Retrieve stored values from localStorage
+            const amount = localStorage.getItem('amount');
+            const quantity = localStorage.getItem('quantity');
+            const date = localStorage.getItem('date');
+            const time = localStorage.getItem('time');
+            
+            if (amount && quantity && date && time) {
+                // Calculate the total amount
+                const totalAmount = amount * quantity;
+
+                // Parse and format the date (DD/MM/YYYY)
+                const parsedDate = new Date(date);
+                const formattedDate = parsedDate.toLocaleDateString('en-GB', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                });
+
+                // Split the time string into hours, minutes
+                const timeParts = time.split(':');
+                const hours = parseInt(timeParts[0], 10);
+                const minutes = timeParts[1];
+
+                // Convert to 12-hour format
+                let formattedHours = hours % 12 || 12;
+                const period = hours >= 12 ? 'PM' : 'AM';
+                const formattedTime = `${String(formattedHours).padStart(2, '0')}:${minutes} ${period}`;
+
+                // Create a transaction object
+                const transaction = {
+                    description: 'Ride charges deducted',
+                    date: formattedDate,
+                    time: formattedTime,
+                    amount: totalAmount
+                };
+
+                // Get existing transactions or initialize an empty array
+                const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+
+                // Add the new transaction to the array
+                transactions.push(transaction);
+
+                // Store the updated transactions array in localStorage
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+
+                // Display all transactions
+                displayTransactions();
+
+                // Calculate the new balance after transaction
+                const newBalance = currentBalance - totalAmount;
+
+                // Update balance logic
+                if (newBalance <= 0) {
+                    document.getElementById('availableBalance').textContent = '₹ 0';
+                    document.getElementById('updateBalanceBtn').style.display = 'block'; // Show update button
+                } else {
+                    document.getElementById('availableBalance').textContent = `₹ ${newBalance}`;
+                }
+
+                // Store the new balance in localStorage
+                localStorage.setItem('balance', newBalance);
+            } else {
+                console.error('Missing data from localStorage.');
+            }
+
+            // Initially display all transactions on page load
+            displayTransactions();
+        });
+
+
+    </script>
+</body>
+
+</html>

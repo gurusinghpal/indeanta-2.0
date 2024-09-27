@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+    <title>Display Page</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="root">
+            <div class="groups">
+                <div class="top-icons">
+                    <img src="left_icon.png" alt="Left Icon" id="leftIcon">
+                    
+                </div>
+                <div class="image">
+                    <img src="output-onlinepngtools.png" alt="QR Icon" class="qr-icon">
+                    <span class="text">QR Code Detected</span>
+                    <span class="text-2">₹ <span id="amountDisplay"></span></span>
+                    <img src="right_icon.png" alt="Wallet Icon" id="rightIcon"> <!-- Wallet Icon -->
+                    <button class="capsule-button" id="paymentButton">Payment Done</button>
+                    <span class="text-4" id="dateTimeDisplay"></span>
+                    <span class="multiply-by-2" id="totalDisplay"></span>
+                    <span class="total">Total</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            // Retrieving the stored values
+            const amount = localStorage.getItem('amount');
+            const quantity = localStorage.getItem('quantity');
+            const date = localStorage.getItem('date');
+            const time = localStorage.getItem('time');
+            const currentBalance = localStorage.getItem('balance') || '0'; // Default to 0 if not set
+
+            // Parse date and time
+            const parsedDate = new Date(date);
+            const parsedTime = new Date(`2000-01-01T${time}`);
+
+            // Format date with leading zeros
+            const formattedDate = parsedDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+
+            // Format time with leading zeros and AM/PM in uppercase
+            const formattedTime = parsedTime.toLocaleTimeString('en-US', {
+                hour12: true,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            }).toUpperCase();
+
+            // Calculating total
+            const total = amount * quantity;
+
+            // Displaying the retrieved values
+            document.getElementById('amountDisplay').textContent = amount;
+            document.getElementById('totalDisplay').innerHTML = `<span class="amountQuantity">₹ ${amount}×${quantity} =</span> ₹ ${total}`;
+            document.getElementById('dateTimeDisplay').textContent = `${formattedDate}\n${formattedTime}`;
+            // document.getElementById('currentBalanceDisplay').textContent = `Current Balance: ₹ ${currentBalance}`; // Display current balance
+        });
+
+
+        // Payment Done button event
+        // document.getElementById('paymentButton').addEventListener('click', function () {
+        //     window.location.href = 'wallet.html'; // Redirect to wallet page
+        // });
+
+        // Wallet icon event (optional)
+        document.getElementById('rightIcon').addEventListener('click', function () {
+            window.location.href = 'wallet.html'; // Redirect to wallet page
+        });
+    </script>
+</body>
+
+</html>

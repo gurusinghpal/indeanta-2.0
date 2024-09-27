@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Page</title>
+</head>
+<body>
+    <h2>Enter Details</h2>
+    <form id="inputForm">
+        Amount in Rupees: <input type="number" id="amountInput" value="10" readonly><br>
+        Quantity: <input type="number" id="quantityInput" required><br>
+        Date: <input type="date" id="dateInput" required><br>
+        Time: 
+        <input type="number" id="hoursInput" min="0" max="23" placeholder="HH" required> :
+        <input type="number" id="minutesInput" min="0" max="59" placeholder="MM" required> :
+        <input type="number" id="secondsInput" min="0" max="59" placeholder="SS" required><br>
+        Current Balance: <input type="number" id="balanceInput" placeholder="Leave empty for default 500"><br>
+        <button type="submit">Submit</button>
+        <button type="button" id="clearTransactionsBtn">Clear Transactions</button>
+        <button type="button" id="goToWalletBtn">Go to Wallet</button> <!-- New Button -->
+    </form>
+
+    <script>
+        // Set the current time in the input fields
+        function setCurrentTime() {
+            const now = new Date();
+            document.getElementById('hoursInput').value = String(now.getHours()).padStart(2, '0');
+            document.getElementById('minutesInput').value = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('secondsInput').value = String(now.getSeconds()).padStart(2, '0');
+        }
+
+        // Call the function to set the current time when the page loads
+        window.onload = setCurrentTime;
+
+        document.getElementById('inputForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Storing the input values in localStorage
+            localStorage.setItem('amount', document.getElementById('amountInput').value);
+            localStorage.setItem('quantity', document.getElementById('quantityInput').value);
+            localStorage.setItem('date', document.getElementById('dateInput').value);
+            
+            // Combine hours, minutes, and seconds into a time string
+            const hours = document.getElementById('hoursInput').value.padStart(2, '0');
+            const minutes = document.getElementById('minutesInput').value.padStart(2, '0');
+            const seconds = document.getElementById('secondsInput').value.padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            
+            localStorage.setItem('time', timeString);
+
+            // Retrieve the balance input or set default
+            const balanceInput = document.getElementById('balanceInput').value;
+            localStorage.setItem('balance', balanceInput || '500');
+
+            // Redirect to payment.html to display the values
+            window.location.href = 'payment.html';
+        });
+
+        // Event listener to clear transactions
+        document.getElementById('clearTransactionsBtn').addEventListener('click', () => {
+            // Clear transactions from localStorage
+            localStorage.removeItem('transactions');
+            
+            // Reset the balance to 500
+            localStorage.setItem('balance', '500');
+            
+            // Display a confirmation message
+            alert('Transactions cleared successfully!');
+        });
+
+        // Event listener for the "Go to Wallet" button
+        document.getElementById('goToWalletBtn').addEventListener('click', () => {
+            // Redirect to wallet.html
+            window.location.href = 'wallet.html';
+        });
+    </script>
+</body>
+</html>

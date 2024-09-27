@@ -1,1 +1,1 @@
-# indeanta-2.0
+# indeanta
