@@ -27,12 +27,12 @@
                     <h2>Transactions</h2>
                     <span class="view-all">View All</span>
                 </div>
-
-                <div class="transaction-box" id="transactionsContainer">
-                    <!-- Transactions will be dynamically inserted here -->
-                </div>
             </div>
         </div>
+
+    </div>
+    <div class="box" id="transactionsContainer">
+        <!-- Transactions will be dynamically inserted here -->
     </div>
 
     <script>
@@ -54,9 +54,9 @@
                 const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
                 // Reverse the transactions array to show the newest first
                 transactions.reverse();
-
                 transactions.forEach(transaction => {
                     const transactionHTML = `
+            <div class="transaction-box"> <!-- Wrap each transaction in a separate box -->
                 <div class="transaction">
                     <div class="icon-background">
                         <img src="bus.png" alt="Bus icon" class="transaction-icon">
@@ -67,8 +67,9 @@
                     </div>
                     <div class="transaction-amount">- ₹${transaction.amount}</div>
                 </div>
-            `;
-                    transactionsContainer.innerHTML += transactionHTML; // Append each transaction
+            </div>
+        `;
+                    transactionsContainer.innerHTML += transactionHTML; // Append each transaction as a separate box
                 });
             };
 
@@ -77,7 +78,7 @@
             const quantity = localStorage.getItem('quantity');
             const date = localStorage.getItem('date');
             const time = localStorage.getItem('time');
-            
+
             if (amount && quantity && date && time) {
                 // Calculate the total amount
                 const totalAmount = amount * quantity;
