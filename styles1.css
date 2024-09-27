@@ -184,7 +184,7 @@ body {
 
 .transaction-details p:last-child {
     font-size: 15px;
-    font-weight: lighter;
+    font-weight: normal;
     letter-spacing: 1px;
     color: #313131;
 }
