@@ -37,52 +37,51 @@
 
     <script>
         window.addEventListener('load', () => {
-
             // Retrieve balance; default to 500 if not set
             const storedBalance = localStorage.getItem('balance');
             const currentBalance = storedBalance !== null && storedBalance !== '' ? storedBalance : '500';
-
+    
             // Display the current balance
             document.getElementById('availableBalance').textContent = `₹ ${currentBalance}`;
-
+    
             // Function to display transactions
             const displayTransactions = () => {
                 const transactionsContainer = document.getElementById('transactionsContainer');
                 transactionsContainer.innerHTML = ''; // Clear the container before displaying
-
+    
                 // Get the transactions from localStorage
                 const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
                 // Reverse the transactions array to show the newest first
                 transactions.reverse();
                 transactions.forEach(transaction => {
                     const transactionHTML = `
-            <div class="transaction-box"> <!-- Wrap each transaction in a separate box -->
-                <div class="transaction">
-                    <div class="icon-background">
-                        <img src="bus.png" alt="Bus icon" class="transaction-icon">
+                <div class="transaction-box"> <!-- Wrap each transaction in a separate box -->
+                    <div class="transaction">
+                        <div class="icon-background">
+                            <img src="bus.png" alt="Bus icon" class="transaction-icon">
+                        </div>
+                        <div class="transaction-details">
+                            <p>${transaction.description}</p>
+                            <p>${transaction.date}, ${transaction.time}</p>
+                        </div>
+                        <div class="transaction-amount">- ₹${transaction.amount}</div>
                     </div>
-                    <div class="transaction-details">
-                        <p>${transaction.description}</p>
-                        <p>${transaction.date}, ${transaction.time}</p>
-                    </div>
-                    <div class="transaction-amount">- ₹${transaction.amount}</div>
                 </div>
-            </div>
-        `;
+            `;
                     transactionsContainer.innerHTML += transactionHTML; // Append each transaction as a separate box
                 });
             };
-
+    
             // Retrieve stored values from localStorage
             const amount = localStorage.getItem('amount');
             const quantity = localStorage.getItem('quantity');
             const date = localStorage.getItem('date');
             const time = localStorage.getItem('time');
-
+    
             if (amount && quantity && date && time) {
                 // Calculate the total amount
                 const totalAmount = amount * quantity;
-
+    
                 // Parse and format the date (DD/MM/YYYY)
                 const parsedDate = new Date(date);
                 const formattedDate = parsedDate.toLocaleDateString('en-GB', {
@@ -90,17 +89,17 @@
                     month: '2-digit',
                     day: '2-digit'
                 });
-
-                // Split the time string into hours, minutes
+    
+                // Split the time string into hours and minutes
                 const timeParts = time.split(':');
                 const hours = parseInt(timeParts[0], 10);
                 const minutes = timeParts[1];
-
+    
                 // Convert to 12-hour format
                 let formattedHours = hours % 12 || 12;
                 const period = hours >= 12 ? 'PM' : 'AM';
                 const formattedTime = `${String(formattedHours).padStart(2, '0')}:${minutes} ${period}`;
-
+    
                 // Create a transaction object
                 const transaction = {
                     description: 'Ride charges deducted',
@@ -108,42 +107,50 @@
                     time: formattedTime,
                     amount: totalAmount
                 };
-
+    
                 // Get existing transactions or initialize an empty array
                 const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-
-                // Add the new transaction to the array
-                transactions.push(transaction);
-
-                // Store the updated transactions array in localStorage
-                localStorage.setItem('transactions', JSON.stringify(transactions));
-
-                // Display all transactions
-                displayTransactions();
-
-                // Calculate the new balance after transaction
-                const newBalance = currentBalance - totalAmount;
-
-                // Update balance logic
-                if (newBalance <= 0) {
-                    document.getElementById('availableBalance').textContent = '₹ 0';
-                    document.getElementById('updateBalanceBtn').style.display = 'block'; // Show update button
+    
+                // Check if the transaction already exists
+                const transactionExists = transactions.some(existingTransaction =>
+                    existingTransaction.amount === transaction.amount &&
+                    existingTransaction.date === transaction.date &&
+                    existingTransaction.time === transaction.time
+                );
+    
+                if (!transactionExists) {
+                    // Add the new transaction to the array
+                    transactions.push(transaction);
+    
+                    // Store the updated transactions array in localStorage
+                    localStorage.setItem('transactions', JSON.stringify(transactions));
+    
+                    // Display all transactions
+                    displayTransactions();
+    
+                    // Calculate the new balance after transaction
+                    const newBalance = currentBalance - totalAmount;
+    
+                    // Update balance logic
+                    if (newBalance <= 0) {
+                        document.getElementById('availableBalance').textContent = '₹ 0';
+                    } else {
+                        document.getElementById('availableBalance').textContent = `₹ ${newBalance}`;
+                    }
+    
+                    // Store the new balance in localStorage
+                    localStorage.setItem('balance', newBalance);
                 } else {
-                    document.getElementById('availableBalance').textContent = `₹ ${newBalance}`;
+                    console.log('Transaction already exists. Not adding it again.');
                 }
-
-                // Store the new balance in localStorage
-                localStorage.setItem('balance', newBalance);
+    
+                // Initially display all transactions on page load
+                displayTransactions();
             } else {
                 console.error('Missing data from localStorage.');
             }
-
-            // Initially display all transactions on page load
-            displayTransactions();
         });
-
-
-    </script>
+    </script>    
 </body>
 
 </html>
